@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIM BRILink & Inventaris Kios</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="login-screen" class="login-wrap">
+    <form id="login-form" class="login-card">
+      <div class="brand-mark">SIM</div>
+      <p class="eyebrow">SISTEM INFORMASI MANAJEMEN</p>
+      <h1>BRILink & Inventaris</h1>
+      <p class="muted">Silakan masuk untuk mengelola transaksi dan persediaan kios.</p>
+      <label for="login-username">Username</label>
+      <input id="login-username" data-testid="login-username" autocomplete="username" required>
+      <label for="login-password">Password</label>
+      <input id="login-password" data-testid="login-password" type="password" autocomplete="current-password" required>
+      <button class="btn primary full" type="submit" data-testid="login-submit">Masuk</button>
+      <p id="login-error" class="message error" data-testid="login-error" role="alert" hidden></p>
+      <p class="hint">Akun demo: <b>admin</b> / <b>admin123</b></p>
+    </form>
+  </div>
+
+  <div id="app" class="app-shell" hidden>
+    <aside class="sidebar">
+      <div class="side-brand">
+        <div class="brand-mark small">SIM</div>
+        <div><strong>SIM Kios</strong><span>BRILink & Retail</span></div>
+      </div>
+      <nav>
+        <button class="nav-link active" data-page="dashboard">▦ <span>Dashboard</span></button>
+        <button class="nav-link" data-page="transactions">⇄ <span>Transaksi Agen</span></button>
+        <button class="nav-link" data-page="inventory">▤ <span>Inventaris</span></button>
+        <button class="nav-link" data-page="reports">▥ <span>Laporan</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <span class="online-dot"></span> Prototype lokal
+        <button id="logout-button" class="logout">Keluar ↗</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">SISTEM INFORMASI MANAJEMEN</p>
+          <h2 id="page-heading">Dashboard</h2>
+        </div>
+        <div class="user-chip"><span class="avatar">A</span><span><b>Administrator</b><small>Admin Kios</small></span></div>
+      </header>
+
+      <section id="page-dashboard" data-testid="dashboard" class="page">
+        <div class="welcome">
+          <div><p class="eyebrow light">RINGKASAN OPERASIONAL</p><h1>Selamat datang kembali.</h1><p>Pantau transaksi agen dan persediaan kios dalam satu sistem.</p></div>
+          <div class="welcome-icon">⌂</div>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><span>Saldo Kas</span><strong id="dashboard-cash" data-testid="dashboard-cash">Rp10.000.000</strong><small>Kas operasional kios</small></article>
+          <article class="stat-card"><span>Saldo Agen</span><strong id="dashboard-agent" data-testid="dashboard-agent">Rp20.000.000</strong><small>Saldo layanan agen</small></article>
+          <article class="stat-card"><span>Jenis Barang</span><strong id="dashboard-products">2</strong><small>Produk inventaris</small></article>
+          <article class="stat-card"><span>Jumlah Transaksi</span><strong id="dashboard-count">0</strong><small>Catatan dalam sistem</small></article>
+        </div>
+        <div class="content-card">
+          <div class="section-heading"><div><h3>Aktivitas terbaru</h3><p>Transaksi dan aktivitas yang tercatat di prototype.</p></div><button class="btn secondary" data-goto="transactions">Buka transaksi</button></div>
+          <div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Aktivitas</th><th>Jenis</th><th>Nominal</th><th>Status</th></tr></thead><tbody id="dashboard-recent"><tr><td colspan="5" class="empty">Belum ada aktivitas.</td></tr></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="page-transactions" class="page" hidden>
+        <div class="page-intro"><div><h3>Pencatatan Transaksi Agen</h3><p>Catat layanan BRILink dan perubahan kas maupun saldo agen.</p></div></div>
+        <div class="two-column">
+          <form id="transaction-form" class="content-card form-card">
+            <h3>Input transaksi baru</h3>
+            <label for="transaction-type">Jenis transaksi</label>
+            <select id="transaction-type" data-testid="transaction-type">
+              <option value="tarik_tunai">Tarik tunai</option>
+              <option value="setor_tunai">Setor tunai</option>
+              <option value="transfer">Transfer antarbank</option>
+              <option value="pembayaran">Pembayaran layanan</option>
+            </select>
+            <div id="service-field" hidden>
+              <label for="transaction-service">Jenis layanan</label>
+              <select id="transaction-service" data-testid="transaction-service">
+                <option value="tagihan">Pembayaran tagihan</option>
+                <option value="pulsa">Pulsa</option>
+                <option value="token_listrik">Token listrik</option>
+              </select>
+            </div>
+            <label for="transaction-amount">Nominal transaksi (Rp)</label>
+            <input id="transaction-amount" data-testid="transaction-amount" type="number" min="1" step="1" placeholder="Contoh: 3000000" required>
+            <div id="fee-field">
+              <label for="transaction-fee">Fee / biaya administrasi (Rp)</label>
+              <input id="transaction-fee" data-testid="transaction-fee" type="number" min="0" step="1" value="0">
+            </div>
+            <button class="btn primary full" type="submit" data-testid="transaction-submit">Simpan transaksi</button>
+            <p id="transaction-success" class="message success" data-testid="transaction-success" role="status" hidden></p>
+            <p id="transaction-error" class="message error" data-testid="transaction-error" role="alert" hidden></p>
+          </form>
+          <div class="content-card balance-card">
+            <h3>Posisi saldo saat ini</h3>
+            <div class="balance-line"><span>Kas kios</span><b id="cash-balance" data-testid="cash-balance">Rp10.000.000</b></div>
+            <div class="balance-line"><span>Saldo agen</span><b id="agent-balance" data-testid="agent-balance">Rp20.000.000</b></div>
+            <div class="note">Saldo akan berubah setelah transaksi yang valid berhasil disimpan. Perubahan ini hanya berlaku pada data prototype.</div>
+          </div>
+        </div>
+        <div class="content-card">
+          <div class="section-heading"><div><h3>Riwayat transaksi agen</h3><p>Daftar transaksi yang tersimpan.</p></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Jenis layanan</th><th>Nominal</th><th>Fee</th><th>Status</th></tr></thead><tbody id="transaction-history"><tr><td colspan="5" class="empty">Belum ada transaksi.</td></tr></tbody></table></div>
+        </div>
+        <div id="last-transaction" data-testid="last-transaction" class="visually-hidden"></div>
+        <span id="last-transaction-fee" data-testid="last-transaction-fee" class="visually-hidden"></span>
+      </section>
+
+      <section id="page-inventory" class="page" hidden>
+        <div class="page-intro"><div><h3>Inventaris Kios Retail</h3><p>Kelola stok dan catat penjualan barang.</p></div></div>
+        <div class="two-column">
+          <form id="sale-form" class="content-card form-card">
+            <h3>Penjualan barang</h3>
+            <label for="product-select">Pilih barang</label>
+            <select id="product-select" data-testid="product-select"></select>
+            <label for="sale-quantity">Jumlah penjualan</label>
+            <input id="sale-quantity" data-testid="sale-quantity" type="number" min="1" step="1" placeholder="Masukkan jumlah" required>
+            <button class="btn primary full" type="submit" data-testid="sale-submit">Simpan penjualan</button>
+            <p id="sale-success" class="message success" data-testid="sale-success" role="status" hidden></p>
+            <p id="sale-error" class="message error" data-testid="sale-error" role="alert" hidden></p>
+            <div class="total-preview">Total penjualan <strong id="sale-total" data-testid="sale-total">Rp0</strong></div>
+          </form>
+          <form id="stock-form" class="content-card form-card">
+            <h3>Penambahan stok</h3>
+            <label for="stock-product">Pilih barang</label>
+            <select id="stock-product" data-testid="stock-product"></select>
+            <label for="stock-add-quantity">Jumlah penambahan</label>
+            <input id="stock-add-quantity" data-testid="stock-add-quantity" type="number" min="1" step="1" placeholder="Contoh: 10" required>
+            <button class="btn primary full" type="submit" data-testid="stock-add-submit">Tambah stok</button>
+            <p id="stock-success" class="message success" data-testid="stock-success" role="status" hidden></p>
+          </form>
+        </div>
+        <div class="content-card">
+          <div class="section-heading"><div><h3>Daftar persediaan</h3><p>Stok awal mengikuti data contoh usaha.</p></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Nama barang</th><th>Stok tersedia</th><th>Satuan</th><th>Harga jual</th><th>Status</th></tr></thead><tbody id="inventory-table"></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="page-reports" class="page" hidden>
+        <div class="page-intro"><div><h3>Laporan Transaksi</h3><p>Rekap transaksi berdasarkan rentang tanggal.</p></div></div>
+        <form id="report-form" class="content-card report-filter">
+          <div><label for="report-start">Tanggal awal</label><input type="date" id="report-start" data-testid="report-start" value="2026-01-01"></div>
+          <div><label for="report-end">Tanggal akhir</label><input type="date" id="report-end" data-testid="report-end" value="2026-12-31"></div>
+          <button class="btn primary" type="submit" data-testid="report-submit">Tampilkan laporan</button>
+        </form>
+        <div class="stats-grid report-stats">
+          <article class="stat-card"><span>Jumlah catatan</span><strong id="report-count">0</strong></article>
+          <article class="stat-card"><span>Total nominal</span><strong id="report-total" data-testid="report-total">Rp0</strong></article>
+          <article class="stat-card"><span>Total fee</span><strong id="report-fee">Rp0</strong></article>
+        </div>
+        <div class="content-card"><h3>Rincian laporan</h3><div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Aktivitas</th><th>Nominal</th><th>Fee</th></tr></thead><tbody id="report-table"><tr><td colspan="4" class="empty">Pilih periode laporan.</td></tr></tbody></table></div></div>
+      </section>
+
+      <footer>Prototype akademik untuk pengujian fungsional · Data simulasi, bukan sistem resmi BRILink.</footer>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
